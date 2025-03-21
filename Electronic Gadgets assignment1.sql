@@ -8,6 +8,18 @@ Email varchar(50) unique,
 Phone bigint,
 Address varchar(60));
 
+insert into customers values
+(1, 'Fathima', 'Zahira', 'Fathima.Zah@gmail.com', '1029384756', '123 Amityville St'),
+(2, 'Manoj', 'Mani', 'ahmahmed@gmail.com', '9876543210', '108 Bu Danig Ave'),
+(3, 'Sungu', 'Saitama', 'onesaitama@gmail.com', '9218239531', '456 Fubuki Ave'),
+(4, 'Luffy', 'Krishnan', 'angelfruit@gmail.com', '9182305812', '789 Nami St'),
+(5, 'Sungjinwoo', 'Singh', 'jinwoo@gmail.com', '9471823912', '321 Aura Farm'),
+(6, 'Ichigo', 'Kumar', 'kurosaki.ichigo@example.com', '9184728248', '123 Bankai Ave'),
+(7, 'Isagi', 'Kahn', 'clown@gmail.com', '9432109876', '1 Strika St'),
+(8, 'Uzumaki', 'Nair', 'boruto.nair@gmail.com', '9321098765', '106 Sasuke Blvd'),
+(9, 'Gojo', 'Reddy', 'gojo.suguru@gmail.com', '9420987654', '753 Shibuya Ave'),
+(10, 'Mohammed', 'Aizen', 'Aizen.watashi@gmail.com', '9105576543', '852 Yokoso Rd');
+
 select * from inventory;
 
 alter table orders
@@ -36,6 +48,19 @@ ProductName text not null,
 Description varchar(255),
 Price decimal(10,2) not null);
 
+insert into products values 
+(1,'Laptop', 'High-performance laptop', 5500.00),
+(2,'Laser Printer', 'Lightweight and lighting fast Printer', 1100.00),
+(3,'Smart Gloves', 'Highly durable and innovative Smart Gloves', 880.00),
+(4,'Stretchable Smartphone', 'A flexible, unbreakable smartphone', 1925.00),
+(5,'Shadow SSD', 'A high-speed 1TB SSD with rapid data transfer', 825.00),
+(6,'Hollow VR Headset', 'A VR headset with immersive audio and visuals', 2530.00),
+(7,'Tactical Smart Watch', 'Advanced sports analyzing watch', 1700.00),
+(8,'Rasengan Drone', 'High-speed drone with rotor blades', 3200.00),
+(9,'Infinity Projector', 'Projector with limitless focus and crystal-clear visuals', 1980.00),
+(10,'Illusionary Smart Glasses', 'Smart glasses with holographic displays', 2200.00);
+desc products;
+
 drop table OrderDetails;
 
 create table Orders
@@ -45,13 +70,38 @@ OrderDate date,
 TotalAmount decimal(10,2),
 foreign key (CustomerID) references customers(CustomerID));
 
+insert into orders values
+(1, 1, '2024-12-30', 5500.00),
+(2, 2, '2024-11-29', 2000.00),
+(3, 3, '2025-03-13', 88000.00),
+(4, 4, '2025-03-11', 38500.00),
+(5, 5, '2025-02-05', 11550.00),
+(6, 6, '2025-01-28', 154330.00),
+(7, 7, '2025-03-25', 180200.00),
+(8, 8, '2025-03-15', 26400.00),
+(9, 9, '2025-03-19', 3960.00),
+(10, 10, '2025-04-30', 22000.00);
+
 create table OrderDetails 
 (OrderDetailId int primary key,
 OrderID int not null,
 ProductID int not null,
 Quantity long not null,
-foreign key(OrderID) references Orders(OrderID),
+foreign key(OrderID) references Orders(OrderID) on delete cascade,
 foreign key(ProductID) references Products (ProductID));
+
+insert into OrderDetails values
+(101,1, 1, 1),
+(102,2, 2, 75),
+(103,3, 3, 100),
+(104,4, 3, 20),
+(105,5, 5, 14),
+(106,6, 6, 61),
+(107,7, 7, 106),
+(108,8, 5, 32),
+(109,9, 9, 2),
+(110,10, 10, 10);
+
 
 create table Inventory 
 (InventoryID int primary key,
@@ -59,6 +109,18 @@ ProductID int not null,
 QuantityInStock int,
 LastStockUpdate datetime not null,
 foreign key (ProductID) references Products(ProductID));
+
+insert into Inventory values
+(201,1, 100, '2025-03-16 15:10:39'),
+(202,2, 150, '2025-03-16 15:28:18'),
+(203,3, 200, '2025-03-16 15:28:18'),
+(204,4, 25, '2025-03-16 15:28:18'),
+(205,5, 100, '2025-03-16 15:28:18'),
+(206,6, 100, '2025-03-16 15:28:18'),
+(207,7, 160, '2025-03-16 15:28:18'),
+(208,8, 50, '2025-03-16 15:28:18'),
+(209,9, 75, '2025-03-16 15:28:18'),
+(210, 10, 100, '2025-03-16 15:28:18');
 
 desc Inventory;
 /* task 2 
@@ -115,11 +177,7 @@ set o.TotalAmount = OrderTotals.TotalAmount;
 select * from orderdetails;
 
 /* Q9) Delete all orders and associated order details for a specific customer*/
-delete from OrderDetails
-where OrderID in (
-select OrderID
-from Orders
-where CustomerID = 2);
+
 delete from orders
 where customerID = 2;
 
